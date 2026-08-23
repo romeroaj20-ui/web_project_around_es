@@ -1,10 +1,30 @@
 let initialCards = [
-  { name: "Card 1", link: "https://example.com/card1" },
-  { name: "Card 2", link: "https://example.com/card2" },
-  { name: "Card 3", link: "https://example.com/card3" },
-  { name: "Card 4", link: "https://example.com/card4" },
-  { name: "Card 5", link: "https://example.com/card5" },
-  { name: "Card 6", link: "https://example.com/card6" },
+  {
+    name: "Valle de Yosemite",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
+  },
+  {
+    name: "Parque Nacional de la Vanoise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
+  },
+  {
+    name: "Latemar",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
+  },
+  {
+    name: "Montañas Calvas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
+  },
+  {
+    name: "Lago Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
+  },
 ];
 
-console.log(initialCards);
+initialCards.forEach((card) => {
+  console.log(card.name);
+});
