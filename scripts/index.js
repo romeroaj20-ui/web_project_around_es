@@ -28,13 +28,13 @@ let initialCards = [
 const editProfileBtn = document.querySelector(".profile__edit-button");
 const editProfilePopup = document.querySelector("#edit-popup");
 const closeEditProfileBtn = editProfilePopup.querySelector(".popup__close");
-const profileName = document.querySelector(".profile__name");
+const formElement = document.querySelector(".popup__form");
+const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const nameInput = formElement.querySelector(".popup__input_type_name");
 const descriptionInput = formElement.querySelector(
   ".popup__input_type_description",
 );
-const formElement = document.querySelector(".popup__form");
 
 function openModal() {
   editProfilePopup.classList.add("popup_is-opened");
