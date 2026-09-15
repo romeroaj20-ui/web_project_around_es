@@ -29,31 +29,20 @@ const initialCards = [
 
 const openEditFormButton = document.querySelector(".profile__edit-button");
 const editFormModalWindow = document.querySelector("#edit-popup");
-//const closeEditProfileBtn = editFormModalWindow.querySelector(".popup__close");
-//const formElement = document.querySelector("#edit-profile-form");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
-const titleInput = editFormModalWindow.querySelector(".popup__input_type_name");
-const descriptionInput = editFormModalWindow.querySelector(
-  ".popup__input_type_description",
-);
+const titleInput = editFormModalWindow.querySelector("#name-input");
+const descriptionInput =
+  editFormModalWindow.querySelector("#description-input");
 const cardFormModalWindow = document.querySelector("#new-card-popup");
 const openCardFormButton = document.querySelector(".profile__add-button");
-const cardNameInput = cardFormModalWindow.querySelector(
-  ".popup__input_type_card-name",
-);
-const cardLinkInput = cardFormModalWindow.querySelector(
-  ".popup__input_type_url",
-);
-//const closeCardBtn = formCardElement.querySelector(".popup__close");
-//const imageCloseBtn = imageModalWindow.querySelector(".popup__close");
+const cardNameInput = cardFormModalWindow.querySelector("#place-name-input");
+const cardLinkInput = cardFormModalWindow.querySelector("#link-input");
 const imageModalWindow = document.querySelector("#image-popup");
 const imageElement = imageModalWindow.querySelector(".popup__image");
 const imageCaption = imageModalWindow.querySelector(".popup__caption");
 const forms = document.querySelectorAll(".popup__form");
-const cardFormSubmitButton = cardFormModalWindow.querySelector(
-  ".popup__button_disabled",
-);
+
 const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".card");
@@ -62,7 +51,6 @@ const cardsWrap = document.querySelector(".cards__list");
 const cardFormElement = cardFormModalWindow.querySelector(".popup__form");
 
 const openModal = (modal) => {
-  setEventListeners(forms);
   modal.classList.add("popup_is-opened");
   document.addEventListener("keyup", handleEscUp);
 };

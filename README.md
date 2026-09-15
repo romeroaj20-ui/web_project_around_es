@@ -6,4 +6,6 @@ Descripción del proyecto: pagina web realizada a traves de VS Code como herrami
 
 Tecnologías y técnicas usadas: Se utilizo tanto HTML, CSS y JavaScript para la elaboracion de esta página web.
 
+Lista de funcionalidades: creación y actualización de tarjetas, se le puede dar likes a las cartas y tambien quitarselo, se puede editar el perfil como quieras,se realiza una validación de formularios para que sean completados de forma correcta, se programaron diferentes maneras de cerrar las ventanas emergentes que posee.
+
 Link para visualizar el proyecto: https://romeroaj20-ui.github.io/web_project_around_es/
