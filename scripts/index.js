@@ -157,6 +157,7 @@ openEditFormButton.addEventListener("click", handleOpenEditModal);
 openCardFormButton.addEventListener("click", () =>
   openModal(cardFormModalWindow),
 );
+setEventListeners(forms);
 
 popups.forEach((popup) => {
   popup.addEventListener("click", handlePopupClose);
