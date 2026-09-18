@@ -125,6 +125,10 @@
   border: 2px solid red;
 }
 
+.popup__error_invisible {
+  display: none;
+}
+
 .popup__error_visible {
   display: block;
   color: red;

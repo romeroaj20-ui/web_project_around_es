@@ -51,7 +51,7 @@
           <h3 class="popup__title">Editar perfil</h3>
           <form class="popup__form" id="edit-profile-form">
             <input
-              id="name-input-error"
+              id="name-input"
               class="popup__input popup__input_type_name"
               name="name"
               placeholder="Nombre"
@@ -60,11 +60,11 @@
               maxlength="40"
               required
             />
-            <span class="name-input-error popup__input-error"
+            <span class="popup__error name-input-error popup__error_invisible"
               >Por favor, rellena este campo.</span
             >
             <input
-              id="description-input-error"
+              id="description-input"
               class="popup__input popup__input_type_description"
               name="description"
               placeholder="Acerca de mí"
@@ -73,7 +73,8 @@
               maxlength="200"
               required
             />
-            <span class="description-input-error popup__input-error"
+            <span
+              class="popup__error description-input-error popup__error_invisible"
               >Por favor, rellena este campo.</span
             >
             <button class="button popup__button" type="submit" disabled>
@@ -92,7 +93,7 @@
           <h3 class="popup__title">Nuevo lugar</h3>
           <form class="popup__form" id="new-card-form">
             <input
-              id="place-name-input-error"
+              id="place-name-input"
               class="popup__input popup__input_type_card-name"
               name="place-name"
               placeholder="Título"
@@ -101,17 +102,18 @@
               maxlength="30"
               type="text"
             />
-            <span class="place-name-input-error popup__input-error"
+            <span
+              class="popup__error place-name-input-error popup__error_invisible"
               >Por favor, rellena este campo.</span
             >
             <input
-              id="link-input-error"
+              id="link-input"
               class="popup__input popup__input_type_url"
               name="link"
               placeholder="Enlace a la imagen"
               required
               type="url"
-            /><span class="link-input-error popup__input-error"
+            /><span class="popup__error link-input-error popup__error_invisible"
               >Por favor, introduce una dirección web.</span
             >
             <button class="button popup__button" type="submit" disabled>

@@ -1,17 +1,16 @@
 const form = document.querySelector(".popup");
 
-function showInputError(inputElement, errorMessage) {
-  const errorElement = document.querySelector(`#${inputElement.id}-error`);
-  inputElement.classList.add("popup__input_type_error");
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add("popup__error_visible");
-}
-
 function hideInputError(inputElement) {
-  const errorElement = document.querySelector(`#${inputElement.id}-error`);
+  const errorElement = document.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove("popup__input_type_error");
   errorElement.classList.remove("popup__error_visible");
   errorElement.textContent = "";
+}
+function showInputError(inputElement, errorMessage) {
+  const errorElement = document.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add("popup__input_type_error");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("popup__error_visible");
 }
 
 function hasInvalidInput(inputList) {
@@ -54,9 +53,9 @@ export function resetValidation(formElement) {
   const inputs = formElement.querySelectorAll(".popup__input");
   const submitButton = formElement.querySelector(".popup__button");
 
-  inputs.forEach((input) => {
-    const errorElement = formElement.querySelector(`#${input.id}-error`);
-    input.classList.remove("popup__input_type_error");
+  inputs.forEach((inputElement) => {
+    const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+    inputElement.classList.remove("popup__input_type_error");
     errorElement.classList.remove("popup__error_visible");
     errorElement.textContent = "";
   });
