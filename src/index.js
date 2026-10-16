@@ -1,4 +1,7 @@
 import { setEventListeners, resetValidation } from "./validate.js";
+import { UserInfo } from "./components/UserInfo.js";
+import { PopupWithForm } from "./components/PopupWithForm.js";
+import { PopupWithImage } from "./components/PopupWithImage.js";
 
 const initialCards = [
   {
@@ -28,19 +31,37 @@ const initialCards = [
 ];
 
 const openEditFormButton = document.querySelector(".profile__edit-button");
-const editFormModalWindow = document.querySelector("#edit-popup");
+const editFormModalWindow = new PopupWithForm("#edit-popup", (inputValues) => {
+  userInfo.setUserInfo(inputValues[titleInput], inputValues[descriptionInput]);
+});
+
+editFormModalWindow.setEventListeners();
+
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
-const titleInput = editFormModalWindow.querySelector("#name-input");
-const descriptionInput =
-  editFormModalWindow.querySelector("#description-input");
-const cardFormModalWindow = document.querySelector("#new-card-popup");
+//const titleInput = editFormModalWindow.querySelector("#name-input");
+//const descriptionInput =
+editFormModalWindow.querySelector("#description-input");
+const cardFormModalWindow = new PopupWithForm(
+  "#new-card-popup",
+  (inputValues) => {
+    renderCard(
+      { name: inputValues[cardNameInput], link: inputValues[cardLinkInput] },
+      cardsWrap,
+    );
+    cardFormElement.reset();
+    cardFormModalWindow.close();
+  },
+);
+
+cardFormModalWindow.setEventListeners();
+
 const openCardFormButton = document.querySelector(".profile__add-button");
 const cardNameInput = cardFormModalWindow.querySelector("#place-name-input");
 const cardLinkInput = cardFormModalWindow.querySelector("#link-input");
-const imageModalWindow = document.querySelector("#image-popup");
-const imageElement = imageModalWindow.querySelector(".popup__image");
-const imageCaption = imageModalWindow.querySelector(".popup__caption");
+const imageModalWindow = new PopupWithImage("#image-popup");
+//const imageElement = imageModalWindow.querySelector(".popup__image");
+//const imageCaption = imageModalWindow.querySelector(".popup__caption");
 const forms = document.querySelectorAll(".popup__form");
 
 const cardTemplate = document
@@ -49,6 +70,8 @@ const cardTemplate = document
 const popups = document.querySelectorAll(".popup");
 const cardsWrap = document.querySelector(".cards__list");
 const cardFormElement = cardFormModalWindow.querySelector(".popup__form");
+
+const userInfo = new UserInfo(profileTitle, profileDescription);
 
 const openModal = (modal) => {
   modal.classList.add("popup_is-opened");
@@ -79,20 +102,18 @@ const closeModal = (modal) => {
 };
 
 const fillProfileForm = () => {
-  titleInput.value = profileTitle.textContent;
-  descriptionInput.value = profileDescription.textContent;
+  const { title, description } = userInfo.getUserInfo();
+  titleInput.value = title;
+  descriptionInput.value = description;
 };
-
 const handleOpenEditModal = () => {
   fillProfileForm();
-  openModal(editFormModalWindow);
+  editFormModalWindow.open();
 };
-
 const handleProfileFormSubmit = (event) => {
   event.preventDefault();
-  profileTitle.textContent = titleInput.value;
-  profileDescription.textContent = descriptionInput.value;
-  closeModal(editFormModalWindow);
+  userInfo.setUserInfo(titleInput.value, descriptionInput.value);
+  editFormModalWindow.close();
 };
 
 const handleLikeIcon = (event) => {
@@ -135,11 +156,11 @@ const renderCard = (data, wrap) => {
 const handleCardFormSubmit = (event) => {
   event.preventDefault();
   renderCard(
-    { name: cardNameInput.value, link: cardLinkInput.value },
+    { name: inputValues[cardNameInput], link: inputValues[cardLinkInput] },
     cardsWrap,
   );
-  closeModal(cardFormModalWindow);
   cardFormElement.reset();
+  cardFormModalWindow.close();
 };
 
 const handlePopupClose = (event) => {
