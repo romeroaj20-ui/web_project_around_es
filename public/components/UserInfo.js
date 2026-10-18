@@ -1,10 +1,20 @@
 export class UserInfo {
-    nameSelector;
-    aboutSelector;
+    titleSelector;
+    descriptionSelector;
     avatarSelector;
-    constructor() {
-        this.nameSelector = ".profile__title";
-        this.aboutSelector = ".profile__subtitle";
-        this.avatarSelector = ".profile__image";
+    constructor(titleSelector, descriptionSelector, avatarSelector) {
+        this.titleSelector = titleSelector;
+        this.descriptionSelector = descriptionSelector;
+        this.avatarSelector = avatarSelector;
+    }
+    getUserInfo() {
+        return {
+            name: this.titleSelector.textContent,
+            about: this.descriptionSelector.textContent,
+        };
+    }
+    setUserInfo({ name, about }) {
+        this.titleSelector.textContent = name;
+        this.descriptionSelector.textContent = about;
     }
 }

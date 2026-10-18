@@ -39,9 +39,9 @@ private toggleButtonState(): void {
 
   private setEventListeners(): void {
     this.inputList.forEach((input) => {
-      input.addEventListener('input', () => {}),
-    }
-  }
+      input.addEventListener('input', () => {});
+  })
+}
 
   enableValidation(){
     this.inputList.forEach((input) => {
