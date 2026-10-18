@@ -2,18 +2,14 @@ import { inputSelector, type defaultFormConfig } from '../utils/constants';
 
 export class FormValidator { 
   private formElement: HTMLFormElement;
-  private inputList: HTMLInputElement[];
-  private buttonElement!: HTMLButtonElement;
-
+  
     
   constructor({ inputSelector, 
     submitButtonSelector, 
     disabledButtonClass, 
     errorInputClass, 
-    VisibleErrorClass }: defaultFormConfig, formElement: HTMLFormElement) {
+    visibleErrorClass }: defaultFormConfig, formElement: HTMLFormElement) {
         this.formElement = formElement;
-        this.inputList = Array.from(this.formElement.querySelectorAll(inputSelector));
-        this.buttonElement = this.formElement.querySelector(submitButtonSelector);
   }
   
 private checkInputValid(input: HTMLInputElement): void {
