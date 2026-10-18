@@ -5,7 +5,7 @@ export class Section<T> {
     private renderer: RendererFunction<T>;
     private container: HTMLElement;
 
-    constructor({ items, renderer }{ items: T[]; renderer: RendererFunction<T> }, containerSelector: HTMLElement) {
+    constructor({ items, renderer }: { items: T[]; renderer: RendererFunction<T> }, containerSelector: string) {
         this.items = items;
         this.renderer = renderer;
         this.container = document.querySelector(containerSelector) as HTMLElement;
@@ -14,6 +14,11 @@ export class Section<T> {
     public renderItems(): void {
         this.items.forEach((item) => {
             this.renderer(item);
-        }); 
+        }) 
     }
+
+    public addItem(element: HTMLElement): void {
+        this.container.append(element);
+    }
+
 }

@@ -1,27 +1,26 @@
-interface CardData {
+export interface CardData {
     name: string;
-    link: HTMLImageElement;
+    link: string;
 }
 
-export abstract class Card {
+export class Card {
     private name: string;
-    private link: HTMLImageElement;
-    private templateSelector: HTMLFormElement;
+    private link: string;
+    private element!: HTMLElement;
+    private selector: string;
 
     constructor(
         { name, link }: CardData,
-        templateSelector: HTMLTemplateElement,
-        handleCardClick: (name: string, link: HTMLImageElement) => void
+        selector: string,
+        handleCardClick: (name: string, link: string) => void
     ) {
         this.name = name;
         this.link = link;
-        this.templateSelector = templateSelector;
+        this.selector = selector;
     }
 
-  public getTemplate(): HTMLElement {
-    const cardTemplate = document.querySelector(
-      this.templateSelector,
-    ) as HTMLFormElement;
+  protected getTemplate(): HTMLElement {
+    const cardTemplate = document.querySelector(this.selector) as HTMLTemplateElement;
 
     const cardElement = cardTemplate.content
       .querySelector(".card")!
@@ -31,7 +30,7 @@ export abstract class Card {
   }
 
    generateCard(): HTMLElement {
-    this.link = this.getTemplate();
+    this.element = this.getTemplate();
     this.setEventListeners();
 
     const cardImage = this.element.querySelector(
@@ -39,25 +38,38 @@ export abstract class Card {
     ) as HTMLImageElement;
     const cardTitle = this.element.querySelector(".card__title") as HTMLElement;
 
-    cardImage.src = this.image;
-    cardImage.alt = this.title;
-    cardTitle.textContent = this.title;
+    cardImage.src = this.link;
+    cardImage.alt = this.name;
+    cardTitle.textContent = this.name;
 
     return this.element;
   }
  
- 
-  protected handleOpenPopup = (): void => {
+  protected handleCardClick = (): void => {
     const cardImage = this.element.querySelector(
-      ".card__image",     ) as HTMLImageElement;
-    popupImage.src = cardImage.src;     popupElement.classList.add("popup_is-opened");   };
+      ".card__image",
+    ) as HTMLImageElement;
+    cardImage.classList.toggle(".popup__image");
+  }
 
-  protected handleClosePopup = (): void => {
-   popupImage.src = "";
-    popupElement.classList.remove("popup_is-opened");   };
-
-  protected setEventListeners(): void {
-    this.element.addEventListener("click", this.handleOpenPopup);
-    popupCloseButton.addEventListener("click", this.handleClosePopup);
+  setEventListeners(): void {
+    const cardImage = this.element.querySelector(
+      ".card__image",
+    ) as HTMLImageElement;
+    cardImage.addEventListener("click", this.handleCardClick);
   }
 }
+//   protected handleOpenPopup = (): void => {
+//     const cardImage = this.element.querySelector(
+//       ".card__image",     ) as HTMLImageElement;
+//     popupImage.src = cardImage.src;     popupElement.classList.add("popup_is-opened");   };
+
+//   protected handleClosePopup = (): void => {
+//    popupImage.src = "";
+//     popupElement.classList.remove("popup_is-opened");   };
+
+//   protected setEventListeners(): void {
+//     this.element.addEventListener("click", this.handleOpenPopup);
+//     popupCloseButton.addEventListener("click", this.handleClosePopup);
+//   }
+// }

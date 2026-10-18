@@ -1,30 +1,65 @@
-import type { defaultFormConfig } from '../utils/constants';
+import { inputSelector, type defaultFormConfig } from '../utils/constants';
 
-class FormValidator { 
-  private checkInputValid: HTMLInputElement;
-  private submitButtonEstate: HTMLButtonElement;
+export class FormValidator { 
   private formElement: HTMLFormElement;
-  private inputEvents: HTMLInputElement[];
-  private buttonElement: HTMLButtonElement;
+  private inputList: HTMLInputElement[];
+  private buttonElement!: HTMLButtonElement;
+
     
   constructor({ inputSelector, 
     submitButtonSelector, 
     disabledButtonClass, 
     errorInputClass, 
     VisibleErrorClass }: defaultFormConfig, formElement: HTMLFormElement) {
-        this.checkInputValid = this.checkInputValid;
-        this.submitButtonEstate = this.submitButtonEstate;
         this.formElement = formElement;
-        this.inputEvents = Array.from(this.formElement.querySelectorAll(inputSelector));
+        this.inputList = Array.from(this.formElement.querySelectorAll(inputSelector));
         this.buttonElement = this.formElement.querySelector(submitButtonSelector);
   }
   
-  enableValidation(){
+private checkInputValid(input: HTMLInputElement): void {
+    if (!input.validity.valid) {
+      const errorElement!: HTMLElement = document.querySelector(`.${inputSelector.id}-error`);
+      input.classList.add(errorInputClass);
+      errorElement.textContent = input.validationMessage;
+      errorElement.classList.add(visibleErrorClass);}
 
+      else {
+        const errorElement!: HTMLElement = document.querySelector(`.${inputSelector.id}-error`);
+        input.classList.remove(errorInputClass);
+        errorElement.classList.remove(visibleErrorClass);
+        errorElement.textContent = '';
+      }
+}
+
+private toggleButtonState(): void {
+    if (this.formElement.checkValidity()) {
+      this.buttonElement.disabled = false;
+      this.buttonElement.classList.remove(disabledButtonClass);
+    } else {
+      this.buttonElement.disabled = true;
+      this.buttonElement.classList.add(disabledButtonClass);
     }
-    
-  resetValidation() {
+  }
 
-    }  
+  private setEventListeners(): void {
+    this.inputList.forEach((input) => {
+      input.addEventListener('input', () => {}),
+    }
+  }
+
+  enableValidation(){
+    this.inputList.forEach((input) => {
+      input.addEventListener('input', () => {
+        this.checkInputValid(input);
+        this.toggleButtonState();
+      });
+    });
+  }
+
+  resetValidation() {
+    this.inputList.forEach((input) => {
+      input.classList.remove(errorInputClass);
+    });
+  }
 
 }

@@ -2,46 +2,30 @@ import { setEventListeners, resetValidation } from "./validate.js";
 import { UserInfo } from "./components/UserInfo.js";
 import { PopupWithForm } from "./components/PopupWithForm.js";
 import { PopupWithImage } from "./components/PopupWithImage.js";
+import { Card } from "./components/Card.js";
+import { Section } from "./components/Section.js";
+import { FormValidator } from "./components/FormValidator.js";
+import { initialCards } from "./utils/constants.js";
 
-const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-];
+initialCards.forEach((data) => {
+  const card = new Card(
+    data.name,
+    data.link,
+    "#card-template",
+    handlePreviewPicture,
+  );
+  const cardElement = card.generateCard();
+  document.body.append(cardElement);
+});
 
-const openEditFormButton = document.querySelector(".profile__edit-button");
+
+
 const editFormModalWindow = new PopupWithForm("#edit-popup", (inputValues) => {
   userInfo.setUserInfo(inputValues[titleInput], inputValues[descriptionInput]);
 });
 
 editFormModalWindow.setEventListeners();
 
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
-//const titleInput = editFormModalWindow.querySelector("#name-input");
-//const descriptionInput =
-editFormModalWindow.querySelector("#description-input");
 const cardFormModalWindow = new PopupWithForm(
   "#new-card-popup",
   (inputValues) => {
@@ -73,33 +57,7 @@ const cardFormElement = cardFormModalWindow.querySelector(".popup__form");
 
 const userInfo = new UserInfo(profileTitle, profileDescription);
 
-const openModal = (modal) => {
-  modal.classList.add("popup_is-opened");
-  document.addEventListener("keyup", handleEscUp);
-};
 
-const isEscEvent = (event, action) => {
-  if (event.key === "Escape") {
-    const activePopup = document.querySelector(".popup_is-opened");
-    action(activePopup);
-  }
-};
-
-const handleEscUp = (event) => {
-  event.preventDefault();
-  isEscEvent(event, closeModal);
-};
-
-const closeModal = (modal) => {
-  modal.classList.remove("popup_is-opened");
-  document.removeEventListener("keyup", handleEscUp);
-
-  const formElement = modal.querySelector(".popup__form");
-  if (formElement) {
-    resetValidation(formElement);
-    formElement.reset();
-  }
-};
 
 const fillProfileForm = () => {
   const { title, description } = userInfo.getUserInfo();
@@ -182,8 +140,4 @@ setEventListeners(forms);
 
 popups.forEach((popup) => {
   popup.addEventListener("click", handlePopupClose);
-});
-
-initialCards.forEach((data) => {
-  renderCard(data, cardsWrap);
 });

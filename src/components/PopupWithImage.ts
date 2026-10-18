@@ -1,4 +1,5 @@
 import { Popup } from "./Popup";
+import { FormValidator } from "./FormValidator.js";
 
 interface ImageOption {
     link: string;
