@@ -30,8 +30,7 @@ export class FormValidator {
     }
     setEventListeners() {
         this.inputList.forEach((input) => {
-            input.addEventListener('input', () => { }),
-            ;
+            input.addEventListener('input', () => { });
         });
     }
     enableValidation() {
