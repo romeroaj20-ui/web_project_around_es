@@ -3,7 +3,7 @@ import { FormValidator } from "./FormValidator.js";
 
 interface ImageOption {
     link: string;
-    title: string;
+    name: string;
 }
 
 export class PopupWithImage extends Popup {
@@ -13,15 +13,15 @@ export class PopupWithImage extends Popup {
     constructor(popupSelector: string) {
         super(popupSelector);
         this.imageElement = this.popupElement.querySelector(".popup__image") as HTMLImageElement;
-        this.linkElement = this.popupElement.querySelector(".popup__link") as HTMLElement;
+        this.linkElement = this.popupElement.querySelector(".popup__caption") as HTMLElement;
     }
 
     open(data?: ImageOption): void {
         if (data) {
-            const { link, title } = data;
+            const { link, name } = data;
             this.imageElement.src = link;
-            this.imageElement.alt = title;
-            this.linkElement.textContent = title;
+            this.imageElement.alt = name;
+            this.linkElement.textContent = name;
         }
         super.open();
     }

@@ -1,8 +1,8 @@
-export const inputSelector = document.querySelector(".popup__input");
-export const submitButtonSelector = document.querySelector(".popup__button");
-export const disabledButtonClass = document.querySelector(".popup__button_disabled");
-export const errorInputClass = document.querySelector(".popup__input_type_error");
-export const visibleErrorClass = document.querySelector(".popup__error_visible");
+export const inputSelector = ".popup__input";
+export const submitButtonSelector = ".popup__button";
+export const disabledButtonClass = "popup__button_disabled";
+export const errorInputClass = "popup__input_type_error";
+export const visibleErrorClass = "popup__error_visible";
 export const initialCards = [
     {
         name: "Valle de Yosemite",

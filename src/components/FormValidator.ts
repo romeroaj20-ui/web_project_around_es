@@ -2,7 +2,12 @@ import { inputSelector, type defaultFormConfig } from '../utils/constants';
 
 export class FormValidator { 
   private formElement: HTMLFormElement;
-  
+  private inputElement: HTMLInputElement;
+  private submitButtonElement: HTMLButtonElement;
+  private disabledButtonClass: string;
+  private errorInputClass: string;
+  private visibleErrorClass: string;
+  private inputList: NodeListOf<HTMLInputElement>;
     
   constructor({ inputSelector, 
     submitButtonSelector, 
@@ -10,30 +15,36 @@ export class FormValidator {
     errorInputClass, 
     visibleErrorClass }: defaultFormConfig, formElement: HTMLFormElement) {
         this.formElement = formElement;
+        this.inputElement = document.querySelector(inputSelector) as HTMLInputElement;
+        this.submitButtonElement = document.querySelector(submitButtonSelector) as HTMLButtonElement;
+        this.disabledButtonClass = disabledButtonClass;
+        this.errorInputClass = errorInputClass;
+        this.visibleErrorClass = visibleErrorClass;
+        this.inputList = this.formElement.querySelectorAll(inputSelector);
   }
   
 private checkInputValid(input: HTMLInputElement): void {
     if (!input.validity.valid) {
-      const errorElement!: HTMLElement = document.querySelector(`.${inputSelector.id}-error`);
-      input.classList.add(errorInputClass);
+      const errorElement: HTMLElement = document.querySelector(`.${this.inputElement.id}-error`) as HTMLElement;
+      input.classList.add(this.errorInputClass);
       errorElement.textContent = input.validationMessage;
-      errorElement.classList.add(visibleErrorClass);}
+      errorElement.classList.add(this.visibleErrorClass);}
 
       else {
-        const errorElement!: HTMLElement = document.querySelector(`.${inputSelector.id}-error`);
-        input.classList.remove(errorInputClass);
-        errorElement.classList.remove(visibleErrorClass);
+        const errorElement: HTMLElement = document.querySelector(`.${this.inputElement.id}-error`) as HTMLElement;
+        input.classList.remove(this.errorInputClass);
+        errorElement.classList.remove(this.visibleErrorClass);
         errorElement.textContent = '';
       }
 }
 
 private toggleButtonState(): void {
     if (this.formElement.checkValidity()) {
-      this.buttonElement.disabled = false;
-      this.buttonElement.classList.remove(disabledButtonClass);
+      this.submitButtonElement.disabled = false;
+      this.submitButtonElement.classList.remove(this.disabledButtonClass);
     } else {
-      this.buttonElement.disabled = true;
-      this.buttonElement.classList.add(disabledButtonClass);
+      this.submitButtonElement.disabled = true;
+      this.submitButtonElement.classList.add(this.disabledButtonClass);
     }
   }
 
@@ -54,7 +65,8 @@ private toggleButtonState(): void {
 
   resetValidation() {
     this.inputList.forEach((input) => {
-      input.classList.remove(errorInputClass);
+      input.classList.remove(this.errorInputClass);
+      
     });
   }
 

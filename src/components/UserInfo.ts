@@ -1,23 +1,21 @@
 export class UserInfo {
     private titleSelector: HTMLElement;
     private descriptionSelector: HTMLElement;
-    private avatarSelector: HTMLImageElement;
 
-    constructor(titleSelector: HTMLElement, descriptionSelector: HTMLElement, avatarSelector: HTMLImageElement) 
+    constructor(titleSelector: HTMLElement, descriptionSelector: HTMLElement) 
     { this.titleSelector = titleSelector;
       this.descriptionSelector = descriptionSelector;
-      this.avatarSelector = avatarSelector;
     }   
 
     getUserInfo() {
         return {
             name: this.titleSelector.textContent,
-            about: this.descriptionSelector.textContent,
+            description: this.descriptionSelector.textContent,
         };
     }
 
-    setUserInfo({ name, about }: { name: string; about: string }) {
+    setUserInfo({ name, description }: { name: string; description: string }) {
         this.titleSelector.textContent = name;
-        this.descriptionSelector.textContent = about;
+        this.descriptionSelector.textContent = description;
     }
 }

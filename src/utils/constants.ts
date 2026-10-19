@@ -1,18 +1,18 @@
 import type { CardData } from "../components/Card.js";
 
 export interface defaultFormConfig {
-  inputSelector: HTMLInputElement;
-  submitButtonSelector: HTMLButtonElement;
-  disabledButtonClass?: HTMLButtonElement;
-  errorInputClass?: HTMLInputElement;
-  visibleErrorClass?: HTMLElement;
+  inputSelector: string;
+  submitButtonSelector: string;
+  disabledButtonClass: string;
+  errorInputClass: string;
+  visibleErrorClass: string;
 }
 
-  export const inputSelector = document.querySelector(".popup__input") as HTMLInputElement;
-  export const submitButtonSelector = document.querySelector(".popup__button") as HTMLButtonElement;
-  export const disabledButtonClass = document.querySelector(".popup__button_disabled") as HTMLButtonElement;
-  export const errorInputClass = document.querySelector(".popup__input_type_error") as HTMLInputElement;
-  export const visibleErrorClass = document.querySelector(".popup__error_visible") as HTMLElement;
+  export const inputSelector = ".popup__input";
+  export const submitButtonSelector = ".popup__button";
+  export const disabledButtonClass = "popup__button_disabled";
+  export const errorInputClass = "popup__input_type_error";
+  export const visibleErrorClass = "popup__error_visible";
 
   export const initialCards: CardData[] = [
     {

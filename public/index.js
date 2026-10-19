@@ -1,4 +1,3 @@
-import { setEventListeners, resetValidation } from "./validate.js";
 import { UserInfo } from "./components/UserInfo.js";
 import { PopupWithForm } from "./components/PopupWithForm.js";
 import { PopupWithImage } from "./components/PopupWithImage.js";
@@ -21,13 +20,23 @@ const cardFormModalWindow = new PopupWithForm("#new-card-popup", (inputValues) =
     cardFormModalWindow.close();
 });
 cardFormModalWindow.setEventListeners();
-const openCardFormButton = document.querySelector(".profile__add-button");
-const cardNameInput = cardFormModalWindow.querySelector("#place-name-input");
-const cardLinkInput = cardFormModalWindow.querySelector("#link-input");
+// const openCardFormButton = document.querySelector(".profile__add-button");
+// const cardNameInput = cardFormModalWindow.querySelector("#place-name-input");
+// const cardLinkInput = cardFormModalWindow.querySelector("#link-input");
 const imageModalWindow = new PopupWithImage("#image-popup");
 //const imageElement = imageModalWindow.querySelector(".popup__image");
 //const imageCaption = imageModalWindow.querySelector(".popup__caption");
 const forms = document.querySelectorAll(".popup__form");
+forms.forEach((form) => {
+    const formValidator = new FormValidator({
+        inputSelector: ".popup__input",
+        submitButtonSelector: ".popup__button",
+        disabledButtonClass: "popup__button_disabled",
+        errorInputClass: "popup__input_type_error",
+        visibleErrorClass: "popup__error_visible",
+    }, form);
+    formValidator.enableValidation();
+});
 const cardTemplate = document
     .querySelector("#card-template")
     .content.querySelector(".card");
@@ -94,7 +103,6 @@ editFormModalWindow.addEventListener("submit", handleProfileFormSubmit);
 cardFormModalWindow.addEventListener("submit", handleCardFormSubmit);
 openEditFormButton.addEventListener("click", handleOpenEditModal);
 openCardFormButton.addEventListener("click", () => openModal(cardFormModalWindow));
-setEventListeners(forms);
 popups.forEach((popup) => {
     popup.addEventListener("click", handlePopupClose);
 });
