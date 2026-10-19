@@ -1,6 +1,6 @@
 import type { CardData } from "../components/Card.js";
 
-export interface defaultFormConfig {
+export interface FormConfig {
   inputSelector: string;
   submitButtonSelector: string;
   disabledButtonClass: string;
@@ -8,11 +8,13 @@ export interface defaultFormConfig {
   visibleErrorClass: string;
 }
 
-  export const inputSelector = ".popup__input";
-  export const submitButtonSelector = ".popup__button";
-  export const disabledButtonClass = "popup__button_disabled";
-  export const errorInputClass = "popup__input_type_error";
-  export const visibleErrorClass = "popup__error_visible";
+  export const defaultFormConfig: FormConfig = { 
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  disabledButtonClass: "popup__button_disabled",
+  errorInputClass: "popup__input_type_error",
+  visibleErrorClass: "popup__error_visible"
+};
 
   export const initialCards: CardData[] = [
     {

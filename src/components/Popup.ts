@@ -3,7 +3,6 @@ protected popupElement: HTMLElement;
 
     constructor(popupSelector: string) {
         this.popupElement = document.querySelector(popupSelector) as HTMLElement;
-        this.setEventListeners();
     }
 
 private handleEscUp = (event: KeyboardEvent) => {

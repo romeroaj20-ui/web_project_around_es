@@ -1,19 +1,18 @@
-import { Popup } from "./Popup";
-import { FormValidator } from "./FormValidator.js";
+import { Popup } from "./Popup.js";
 export class PopupWithImage extends Popup {
     imageElement;
-    linkElement;
+    captionElement;
     constructor(popupSelector) {
         super(popupSelector);
         this.imageElement = this.popupElement.querySelector(".popup__image");
-        this.linkElement = this.popupElement.querySelector(".popup__link");
+        this.captionElement = this.popupElement.querySelector(".popup__caption");
     }
     open(data) {
         if (data) {
-            const { link, title } = data;
+            const { link, name } = data;
             this.imageElement.src = link;
-            this.imageElement.alt = title;
-            this.linkElement.textContent = title;
+            this.imageElement.alt = name;
+            this.captionElement.textContent = name;
         }
         super.open();
     }

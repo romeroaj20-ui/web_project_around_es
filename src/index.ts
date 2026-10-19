@@ -5,56 +5,63 @@ import { Card } from "./components/Card.js";
 import { Section } from "./components/Section.js";
 import { FormValidator } from "./components/FormValidator.js";
 import { initialCards } from "./utils/constants.js";
+import type { CardData } from "./components/Card.js";
+import { defaultFormConfig } from "./utils/constants.js";
 
-initialCards.forEach((data) => {
-  const card = new Card(
-    { name: data.name, link: data.link },
-    "#card-template",
-    handlePreviewPicture
-  );
-  const cardElement = card.generateCard();
-  document.body.append(cardElement);
-});
+const imagePopup = new PopupWithImage("#image-popup");
+imagePopup.setEventListeners();
 
-const editFormModalWindow = new PopupWithForm("#edit-popup", (inputValues) => {
-  userInfo.setUserInfo(inputValues.name, inputValues.link);
-});
+const createCard = (cardData: CardData): HTMLElement => {
+  const card = new Card(cardData, "#card-template", (name, link) => {
+    imagePopup.open({ name, link });
+  });
+  return card.generateCard();
+};
 
-editFormModalWindow.setEventListeners();
-
-const cardFormModalWindow = new PopupWithForm(
-  "#new-card-popup",
-  (inputValues) => {
-    renderCard(
-      { name: inputValues.name, link: inputValues.link },
-      cardsWrap
-    );
-    cardFormModalWindow.reset();
-    cardFormModalWindow.close();
+const cardsSection = new Section<CardData>(
+  {
+    items: initialCards,
+    renderer: (cardData) => cardsSection.addItem(createCard(cardData)),
   },
+  ".cards__list",
 );
+cardsSection.renderItems();
 
-cardFormModalWindow.setEventListeners();
-
-// const openCardFormButton = document.querySelector(".profile__add-button");
-// const cardNameInput = cardFormModalWindow.querySelector("#place-name-input");
-// const cardLinkInput = cardFormModalWindow.querySelector("#link-input");
-const imageModalWindow = new PopupWithImage("#image-popup");
-//const imageElement = imageModalWindow.querySelector(".popup__image");
-//const imageCaption = imageModalWindow.querySelector(".popup__caption");
-const forms = document.querySelectorAll(".popup__form");
-forms.forEach((form) => {
-  const formValidator = new FormValidator(
-    {
-      inputSelector: ".popup__input",
-      submitButtonSelector: ".popup__button",
-      disabledButtonClass: "popup__button_disabled",
-      errorInputClass: "popup__input_type_error",
-      visibleErrorClass: "popup__error_visible",
-    },
-    form,
-  );
-  formValidator.enableValidation();
+const editProfilePopup = new PopupWithForm("#edit-popup", (inputValues) => {
+  userInfo.setUserInfo({
+    name: inputValues["name"]!,
+    description: inputValues["description"]!,
+  });
 });
 
-const userInfo = new UserInfo(name, description);
+editProfilePopup.setEventListeners();
+
+const newCardPopup = new PopupWithForm("#new-card-popup", (inputValues) => {
+  cardsSection.addItem(
+    createCard({ name: inputValues["place-name"]!, link: inputValues["link"]! }),
+  );
+});
+
+newCardPopup.setEventListeners();
+
+document.querySelector(".profile__edit-button")!.addEventListener("click", () => {
+  const { name, description } = userInfo.getUserInfo();
+  editProfilePopup.open({ name, description });
+  validators["edit-profile-form"]!.resetValidation();
+});
+
+const imageModalWindow = new PopupWithImage("#image-popup");
+imageModalWindow.setEventListeners();
+
+
+const validators: Record<string, FormValidator> = {};
+document.querySelectorAll<HTMLFormElement>(".popup__form").forEach((formElement) => {
+  const validator = new FormValidator(defaultFormConfig, formElement);
+  validator.enableValidation();
+  validators[formElement.id] = validator;
+});
+
+const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  jobSelector: ".profile__description",
+});

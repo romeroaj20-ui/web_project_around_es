@@ -2,7 +2,6 @@ export class Popup {
     popupElement;
     constructor(popupSelector) {
         this.popupElement = document.querySelector(popupSelector);
-        this.setEventListeners();
     }
     handleEscUp = (event) => {
         if (event.key === "Escape") {

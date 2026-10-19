@@ -1,8 +1,7 @@
-import { inputSelector, type defaultFormConfig } from '../utils/constants';
+import type { FormConfig } from "../utils/constants.js";
 
 export class FormValidator { 
   private formElement: HTMLFormElement;
-  private inputElement: HTMLInputElement;
   private submitButtonElement: HTMLButtonElement;
   private disabledButtonClass: string;
   private errorInputClass: string;
@@ -13,25 +12,23 @@ export class FormValidator {
     submitButtonSelector, 
     disabledButtonClass, 
     errorInputClass, 
-    visibleErrorClass }: defaultFormConfig, formElement: HTMLFormElement) {
+    visibleErrorClass }: FormConfig, formElement: HTMLFormElement) {
         this.formElement = formElement;
-        this.inputElement = document.querySelector(inputSelector) as HTMLInputElement;
-        this.submitButtonElement = document.querySelector(submitButtonSelector) as HTMLButtonElement;
+        this.submitButtonElement = this.formElement.querySelector(submitButtonSelector) as HTMLButtonElement;
         this.disabledButtonClass = disabledButtonClass;
         this.errorInputClass = errorInputClass;
         this.visibleErrorClass = visibleErrorClass;
-        this.inputList = this.formElement.querySelectorAll(inputSelector);
+        this.inputList = formElement.querySelectorAll(inputSelector);
   }
   
 private checkInputValid(input: HTMLInputElement): void {
-    if (!input.validity.valid) {
-      const errorElement: HTMLElement = document.querySelector(`.${this.inputElement.id}-error`) as HTMLElement;
+  const errorElement: HTMLElement = document.querySelector(`.${input.id}-error`) as HTMLElement;  
+  if (!input.validity.valid) {      
       input.classList.add(this.errorInputClass);
       errorElement.textContent = input.validationMessage;
       errorElement.classList.add(this.visibleErrorClass);}
 
       else {
-        const errorElement: HTMLElement = document.querySelector(`.${this.inputElement.id}-error`) as HTMLElement;
         input.classList.remove(this.errorInputClass);
         errorElement.classList.remove(this.visibleErrorClass);
         errorElement.textContent = '';
@@ -48,26 +45,28 @@ private toggleButtonState(): void {
     }
   }
 
-  private setEventListeners(): void {
-    this.inputList.forEach((input) => {
-      input.addEventListener('input', () => {});
-  })
+ private setEventListeners(): void {
+  this.inputList.forEach((input: HTMLInputElement) => {
+    input.addEventListener("input", () => {
+      this.checkInputValid(input);
+      this.toggleButtonState();
+    });
+  });
 }
 
-  enableValidation(){
-    this.inputList.forEach((input) => {
-      input.addEventListener('input', () => {
-        this.checkInputValid(input);
-        this.toggleButtonState();
-      });
-    });
-  }
+  enableValidation(): void {
+  this.setEventListeners();
+  this.toggleButtonState();
+}
 
-  resetValidation() {
-    this.inputList.forEach((input) => {
-      input.classList.remove(this.errorInputClass);
-      
-    });
-  }
+  resetValidation(): void {
+  this.inputList.forEach((input: HTMLInputElement) => {
+    const errorElement = this.formElement.querySelector(`.${input.id}-error`) as HTMLElement;
+    input.classList.remove(this.errorInputClass);
+    errorElement.classList.remove(this.visibleErrorClass);
+    errorElement.textContent = "";
+  });
+  this.toggleButtonState();
+}
 
 }

@@ -1,7 +1,5 @@
-import { inputSelector } from '../utils/constants';
 export class FormValidator {
     formElement;
-    inputElement;
     submitButtonElement;
     disabledButtonClass;
     errorInputClass;
@@ -9,22 +7,20 @@ export class FormValidator {
     inputList;
     constructor({ inputSelector, submitButtonSelector, disabledButtonClass, errorInputClass, visibleErrorClass }, formElement) {
         this.formElement = formElement;
-        this.inputElement = document.querySelector(inputSelector);
-        this.submitButtonElement = document.querySelector(submitButtonSelector);
+        this.submitButtonElement = this.formElement.querySelector(submitButtonSelector);
         this.disabledButtonClass = disabledButtonClass;
         this.errorInputClass = errorInputClass;
         this.visibleErrorClass = visibleErrorClass;
-        this.inputList = this.formElement.querySelectorAll(inputSelector);
+        this.inputList = formElement.querySelectorAll(inputSelector);
     }
     checkInputValid(input) {
+        const errorElement = document.querySelector(`.${input.id}-error`);
         if (!input.validity.valid) {
-            const errorElement = document.querySelector(`.${this.inputElement.id}-error`);
             input.classList.add(this.errorInputClass);
             errorElement.textContent = input.validationMessage;
             errorElement.classList.add(this.visibleErrorClass);
         }
         else {
-            const errorElement = document.querySelector(`.${this.inputElement.id}-error`);
             input.classList.remove(this.errorInputClass);
             errorElement.classList.remove(this.visibleErrorClass);
             errorElement.textContent = '';
@@ -42,20 +38,23 @@ export class FormValidator {
     }
     setEventListeners() {
         this.inputList.forEach((input) => {
-            input.addEventListener('input', () => { });
-        });
-    }
-    enableValidation() {
-        this.inputList.forEach((input) => {
-            input.addEventListener('input', () => {
+            input.addEventListener("input", () => {
                 this.checkInputValid(input);
                 this.toggleButtonState();
             });
         });
     }
+    enableValidation() {
+        this.setEventListeners();
+        this.toggleButtonState();
+    }
     resetValidation() {
         this.inputList.forEach((input) => {
+            const errorElement = this.formElement.querySelector(`.${input.id}-error`);
             input.classList.remove(this.errorInputClass);
+            errorElement.classList.remove(this.visibleErrorClass);
+            errorElement.textContent = "";
         });
+        this.toggleButtonState();
     }
 }

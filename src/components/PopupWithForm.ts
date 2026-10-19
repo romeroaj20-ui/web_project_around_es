@@ -1,5 +1,4 @@
-import { Popup } from "./Popup";
-import { FormValidator } from "./FormValidator.js";
+import { Popup } from "./Popup.js";
 
 export class PopupWithForm extends Popup {
     private formElement: HTMLFormElement;
@@ -26,6 +25,11 @@ export class PopupWithForm extends Popup {
                 }
             });
         }
+    }
+
+    close(): void {
+    super.close();
+    this.formElement.reset();
     }
 
     private getInputValues(): Record<string, string> {

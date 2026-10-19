@@ -3,10 +3,12 @@ export class Card {
     link;
     element;
     selector;
+    handleCardClick;
     constructor({ name, link }, selector, handleCardClick) {
         this.name = name;
         this.link = link;
         this.selector = selector;
+        this.handleCardClick = handleCardClick;
     }
     getTemplate() {
         const cardTemplate = document.querySelector(this.selector);
@@ -17,32 +19,28 @@ export class Card {
     }
     generateCard() {
         this.element = this.getTemplate();
-        this.setEventListeners();
         const cardImage = this.element.querySelector(".card__image");
         const cardTitle = this.element.querySelector(".card__title");
         cardImage.src = this.link;
         cardImage.alt = this.name;
         cardTitle.textContent = this.name;
+        this.setEventListeners();
         return this.element;
     }
-    handleCardClick = () => {
-        const cardImage = this.element.querySelector(".card__image");
-        cardImage.classList.toggle(".popup__image");
+    handleLikeClick = () => {
+        const likeButton = this.element.querySelector(".card__like-button");
+        likeButton.classList.toggle("card__like-button_is-active");
+    };
+    handleDeleteClick = () => {
+        const deleteButton = this.element.querySelector(".card__delete-button");
+        deleteButton.closest(".card")?.remove();
     };
     setEventListeners() {
         const cardImage = this.element.querySelector(".card__image");
-        cardImage.addEventListener("click", this.handleCardClick);
+        cardImage.addEventListener("click", () => this.handleCardClick(this.name, this.link));
+        const likeButton = this.element.querySelector(".card__like-button");
+        likeButton.addEventListener("click", this.handleLikeClick);
+        const deleteButton = this.element.querySelector(".card__delete-button");
+        deleteButton.addEventListener("click", this.handleDeleteClick);
     }
 }
-//   protected handleOpenPopup = (): void => {
-//     const cardImage = this.element.querySelector(
-//       ".card__image",     ) as HTMLImageElement;
-//     popupImage.src = cardImage.src;     popupElement.classList.add("popup_is-opened");   };
-//   protected handleClosePopup = (): void => {
-//    popupImage.src = "";
-//     popupElement.classList.remove("popup_is-opened");   };
-//   protected setEventListeners(): void {
-//     this.element.addEventListener("click", this.handleOpenPopup);
-//     popupCloseButton.addEventListener("click", this.handleClosePopup);
-//   }
-// }

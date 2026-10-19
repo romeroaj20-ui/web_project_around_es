@@ -8,6 +8,7 @@ export class Card {
     private link: string;
     private element!: HTMLElement;
     private selector: string;
+    private handleCardClick: (name: string, link: string) => void;
 
     constructor(
         { name, link }: CardData,
@@ -17,6 +18,7 @@ export class Card {
         this.name = name;
         this.link = link;
         this.selector = selector;
+        this.handleCardClick = handleCardClick;
     }
 
   protected getTemplate(): HTMLElement {
@@ -31,8 +33,7 @@ export class Card {
 
    generateCard(): HTMLElement {
     this.element = this.getTemplate();
-    this.setEventListeners();
-
+    
     const cardImage = this.element.querySelector(
       ".card__image",
     ) as HTMLImageElement;
@@ -42,34 +43,37 @@ export class Card {
     cardImage.alt = this.name;
     cardTitle.textContent = this.name;
 
+    this.setEventListeners();
+    
     return this.element;
   }
  
-  protected handleCardClick = (): void => {
-    const cardImage = this.element.querySelector(
-      ".card__image",
-    ) as HTMLImageElement;
-    cardImage.classList.toggle(".popup__image");
+private handleLikeClick = (): void => {
+    const likeButton = this.element.querySelector(
+      ".card__like-button",
+    ) as HTMLButtonElement;
+    likeButton.classList.toggle("card__like-button_is-active");
+  } 
+
+private handleDeleteClick = (): void => {
+    const deleteButton = this.element.querySelector(
+      ".card__delete-button",
+    ) as HTMLButtonElement;
+    deleteButton.closest(".card")?.remove();
   }
 
-  setEventListeners(): void {
+  private setEventListeners(): void {
     const cardImage = this.element.querySelector(
       ".card__image",
     ) as HTMLImageElement;
-    cardImage.addEventListener("click", this.handleCardClick);
+    cardImage.addEventListener("click", () => this.handleCardClick(this.name, this.link));
+    const likeButton = this.element.querySelector(
+      ".card__like-button",
+    ) as HTMLButtonElement;
+    likeButton.addEventListener("click", this.handleLikeClick);
+    const deleteButton = this.element.querySelector(
+      ".card__delete-button",
+    ) as HTMLButtonElement;
+    deleteButton.addEventListener("click", this.handleDeleteClick);
   }
 }
-//   protected handleOpenPopup = (): void => {
-//     const cardImage = this.element.querySelector(
-//       ".card__image",     ) as HTMLImageElement;
-//     popupImage.src = cardImage.src;     popupElement.classList.add("popup_is-opened");   };
-
-//   protected handleClosePopup = (): void => {
-//    popupImage.src = "";
-//     popupElement.classList.remove("popup_is-opened");   };
-
-//   protected setEventListeners(): void {
-//     this.element.addEventListener("click", this.handleOpenPopup);
-//     popupCloseButton.addEventListener("click", this.handleClosePopup);
-//   }
-// }
