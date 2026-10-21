@@ -9,41 +9,48 @@ import { defaultFormConfig } from "./utils/constants.js";
 const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
 const createCard = (cardData) => {
-    const card = new Card(cardData, "#card-template", (name, link) => {
-        imagePopup.open({ name, link });
-    });
-    return card.generateCard();
+  const card = new Card(cardData, "#card-template", (name, link) => {
+    imagePopup.open({ name, link });
+  });
+  return card.generateCard();
 };
-const cardsSection = new Section({
+const cardsSection = new Section(
+  {
     items: initialCards,
     renderer: (cardData) => cardsSection.addItem(createCard(cardData)),
-}, ".cards__list");
+  },
+  ".cards__list",
+);
 cardsSection.renderItems();
 const editProfilePopup = new PopupWithForm("#edit-popup", (inputValues) => {
-    userInfo.setUserInfo({
-        name: inputValues["name"],
-        description: inputValues["description"],
-    });
+  userInfo.setUserInfo({
+    name: inputValues["name"],
+    description: inputValues["description"],
+  });
 });
 editProfilePopup.setEventListeners();
 const newCardPopup = new PopupWithForm("#new-card-popup", (inputValues) => {
-    cardsSection.addItem(createCard({ name: inputValues["place-name"], link: inputValues["link"] }));
+  cardsSection.addItem(
+    createCard({ name: inputValues["place-name"], link: inputValues["link"] }),
+  );
 });
 newCardPopup.setEventListeners();
-document.querySelector(".profile__edit-button").addEventListener("click", () => {
+document
+  .querySelector(".profile__edit-button")
+  .addEventListener("click", () => {
     const { name, description } = userInfo.getUserInfo();
     editProfilePopup.open({ name, description });
     validators["edit-profile-form"].resetValidation();
-});
+  });
 const imageModalWindow = new PopupWithImage("#image-popup");
 imageModalWindow.setEventListeners();
 const validators = {};
 document.querySelectorAll(".popup__form").forEach((formElement) => {
-    const validator = new FormValidator(defaultFormConfig, formElement);
-    validator.enableValidation();
-    validators[formElement.id] = validator;
+  const validator = new FormValidator(defaultFormConfig, formElement);
+  validator.enableValidation();
+  validators[formElement.id] = validator;
 });
 const userInfo = new UserInfo({
-    nameSelector: ".profile__title",
-    jobSelector: ".profile__description",
+  nameSelector: ".profile__title",
+  jobSelector: ".profile__description",
 });

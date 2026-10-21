@@ -4,9 +4,8 @@ import { PopupWithImage } from "./components/PopupWithImage.js";
 import { Card } from "./components/Card.js";
 import { Section } from "./components/Section.js";
 import { FormValidator } from "./components/FormValidator.js";
-import { initialCards } from "./utils/constants.js";
+import { initialCards, defaultFormConfig } from "./utils/constants.js";
 import type { CardData } from "./components/Card.js";
-import { defaultFormConfig } from "./utils/constants.js";
 
 const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
@@ -50,9 +49,10 @@ document.querySelector(".profile__edit-button")!.addEventListener("click", () =>
   validators["edit-profile-form"]!.resetValidation();
 });
 
-const imageModalWindow = new PopupWithImage("#image-popup");
-imageModalWindow.setEventListeners();
-
+document.querySelector(".profile__add-button")!.addEventListener("click", () => {
+  newCardPopup.open();
+  validators["new-card-form"]!.resetValidation();
+});
 
 const validators: Record<string, FormValidator> = {};
 document.querySelectorAll<HTMLFormElement>(".popup__form").forEach((formElement) => {
