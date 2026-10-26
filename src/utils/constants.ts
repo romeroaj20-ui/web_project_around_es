@@ -1,4 +1,5 @@
 import type { CardData } from "../components/Card.js";
+import type { CardFormData } from "../components/Card.js";
 
 export interface FormConfig {
   inputSelector: string;
@@ -16,7 +17,7 @@ export interface FormConfig {
   visibleErrorClass: "popup__error_visible"
 };
 
-  export const initialCards: CardData[] = [
+  export const initialCards: CardFormData[] = [
     {
       name: "Valle de Yosemite",
       link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",

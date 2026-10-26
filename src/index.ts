@@ -6,41 +6,72 @@ import { Section } from "./components/Section.js";
 import { FormValidator } from "./components/FormValidator.js";
 import { initialCards, defaultFormConfig } from "./utils/constants.js";
 import type { CardData } from "./components/Card.js";
+import { Api } from "./components/Api.js";
+
+const api = new Api("https://around-api.es.tripleten-services.com/v1/");
+api.getUserInfo().then(console.log);
+api.getInitialCards().then(console.log);
 
 const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
 
 const createCard = (cardData: CardData): HTMLElement => {
-  const card = new Card(cardData, "#card-template", (name, link) => {
-    imagePopup.open({ name, link });
+  const card = new Card(cardData, "#card-template", (name, link, isLiked) => {
+    imagePopup.open({ name, link, isLiked });
   });
   return card.generateCard();
 };
 
-const cardsSection = new Section<CardData>(
-  {
-    items: initialCards,
-    renderer: (cardData) => cardsSection.addItem(createCard(cardData)),
-  },
-  ".cards__list",
-);
-cardsSection.renderItems();
+const initApp = async () => {
+  try {
+   const [userData, initialCards] = await Promise.all([
+     api.getUserInfo(),
+     api.getInitialCards()
+   ]);
+   cardsSection.renderItems(initialCards);
+   userInfo.setUserInfo({
+    name: userData.name,
+    description: userData.description,
+   });
+ } catch (err) {
+   console.error("Fallo al cargar datos iniciales:", err);
+ }  
+}; initApp();
 
-const editProfilePopup = new PopupWithForm("#edit-popup", (inputValues) => {
-  userInfo.setUserInfo({
+const cardsSection = new Section<CardData>(
+   {
+     items: initialCards,
+     renderer: (cardData) => cardsSection.addItem(createCard(cardData)),
+   },
+   ".cards__list",
+);
+
+const editProfilePopup = new PopupWithForm("#edit-popup", async (inputValues) => {
+  const data = {
     name: inputValues["name"]!,
     description: inputValues["description"]!,
+    }
+  const UpdateUser = await api.updateUserInfo(data);
+  userInfo.setUserInfo({
+  name: UpdateUser.name,
+  description: UpdateUser.description,
   });
+ editProfilePopup.close();
 });
 
 editProfilePopup.setEventListeners();
 
-const newCardPopup = new PopupWithForm("#new-card-popup", (inputValues) => {
-  cardsSection.addItem(
-    createCard({ name: inputValues["place-name"]!, link: inputValues["link"]! }),
-  );
+const newCardPopup = new PopupWithForm("#new-card-popup", async (inputValues) => {
+  const newCard = await api.addNewCard({
+     name: inputValues["place-name"]!,
+     link: inputValues["link"]!,
+     isLiked: false,
+  });
+  newCard.forEach((cardData) => {
+    cardsSection.addItem(createCard(cardData));
+  });
+  newCardPopup.close();
 });
-
 newCardPopup.setEventListeners();
 
 document.querySelector(".profile__edit-button")!.addEventListener("click", () => {

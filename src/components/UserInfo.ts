@@ -1,9 +1,9 @@
-interface UserInfoSelectors {
+ export interface UserInfoSelectors {
       nameSelector: string;
      jobSelector: string;
     }
 
-interface UserData {
+export interface UserData {
       name: string;
       description: string;
     }

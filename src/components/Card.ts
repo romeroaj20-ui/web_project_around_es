@@ -1,6 +1,15 @@
+export interface CardFormData {
+       name: string;
+       link: string;
+     }
+
 export interface CardData {
     name: string;
     link: string;
+    _id?: string;
+    isLiked: boolean;
+    owner?: string;
+    createdAt?: string;
 }
 
 export class Card {
@@ -66,7 +75,11 @@ private handleDeleteClick = (): void => {
     const cardImage = this.element.querySelector(
       ".card__image",
     ) as HTMLImageElement;
-    cardImage.addEventListener("click", () => this.handleCardClick(this.name, this.link));
+    cardImage.addEventListener("click", async () => {
+      //cambiar texto a buton a guardando
+      await this.handleCardClick(this.name, this.link)
+      //volver texto a boton normal 
+    }) ;
     const likeButton = this.element.querySelector(
       ".card__like-button",
     ) as HTMLButtonElement;
