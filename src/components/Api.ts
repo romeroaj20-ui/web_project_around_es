@@ -96,16 +96,16 @@ public async deleteLikeCard(cardData: CardData): Promise<CardData[]>{
     return this.handleResponse<CardData[]>(response);
 }
 
-public async updateProfileAvatar(cardData: CardData): Promise<CardData[]>{ 
+public async updateProfileAvatar(avatar: string): Promise<{ avatar: string }> { 
     const response = await fetch(`${this.baseUrl}users/me/avatar`, {
         method: "PATCH",
         headers: {
             "authorization": "c5a41762-9c64-4f77-939c-b998ccc0c795",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(cardData)
+        body: JSON.stringify(avatar)
     });
-    return this.handleResponse<CardData[]>(response);
+    return this.handleResponse<{ avatar: string }>(response);
 }
 
 }

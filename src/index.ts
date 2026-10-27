@@ -16,8 +16,8 @@ const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
 
 const createCard = (cardData: CardData): HTMLElement => {
-  const card = new Card(cardData, "#card-template", (name, link, isLiked) => {
-    imagePopup.open({ name, link, isLiked });
+  const card = new Card(cardData, "#card-template", (name, link,) => {
+    imagePopup.open({ name, link, isLiked:false });
   });
   return card.generateCard();
 };
@@ -28,10 +28,11 @@ const initApp = async () => {
      api.getUserInfo(),
      api.getInitialCards()
    ]);
-   cardsSection.renderItems(initialCards);
+   initialCards.forEach((cardData) => cardsSection.addItem(createCard(cardData)));
    userInfo.setUserInfo({
     name: userData.name,
     description: userData.description,
+    avatar: userData.avatar,
    });
  } catch (err) {
    console.error("Fallo al cargar datos iniciales:", err);
@@ -40,11 +41,23 @@ const initApp = async () => {
 
 const cardsSection = new Section<CardData>(
    {
-     items: initialCards,
+     items: initialCards.map((cardData) => ({ ...cardData, isLiked: false })),
      renderer: (cardData) => cardsSection.addItem(createCard(cardData)),
    },
    ".cards__list",
 );
+
+const avatarPopup = new PopupWithForm("#avatar-popup", async (inputValues) => {
+  const avatarUrl = inputValues["avatar"]!.trim();
+  const updatedUser = await api.updateProfileAvatar(avatarUrl);
+  userInfo.setAvatar(updatedUser.avatar);
+});
+avatarPopup.setEventListeners();
+
+document.querySelector(".profile__edit")!.addEventListener("click", () => {
+  avatarPopup.open();
+  validators["avatar-form"]!.resetValidation();
+});
 
 const editProfilePopup = new PopupWithForm("#edit-popup", async (inputValues) => {
   const data = {
@@ -95,4 +108,5 @@ document.querySelectorAll<HTMLFormElement>(".popup__form").forEach((formElement)
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   jobSelector: ".profile__description",
+  avatarSelector: ".profile__image",
 });
