@@ -1,14 +1,14 @@
 export class Section {
-    items;
+    //private items: T[];
     renderer;
     container;
     constructor({ items, renderer }, containerSelector) {
-        this.items = items;
+        //this.items = items;
         this.renderer = renderer;
         this.container = document.querySelector(containerSelector);
     }
-    renderItems() {
-        this.items.forEach((item) => {
+    renderItems(items) {
+        items.forEach((item) => {
             this.renderer(item);
         });
     }

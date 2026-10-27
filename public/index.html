@@ -72,7 +72,8 @@
               type="url"
               required
             />
-            <span class="popup__error avatar-input-error popup__error_invisible"
+            <span
+              class="popup__error avatar-url-input-error popup__error_invisible"
               >Introduce un enlace válido a una imagen.</span
             >
             <button class="button popup__button" type="submit">Guardar</button>
@@ -172,14 +173,18 @@
           <p class="popup__caption"></p>
         </div>
       </div>
-      <div class="popup__confirmation">
-        <button
-          aria-label="Cerrar ventana emergente"
-          class="popup__close"
-          type="button"
-        ></button>
-        <h3 class="popup__title">¿Estás seguro/a?</h3>
-        <button class="button popup__button" type="submit" disabled>Si</button>
+      <div class="popup" id="confirmation-popup">
+        <div class="popup__content">
+          <button
+            aria-label="Cerrar ventana emergente"
+            class="popup__close"
+            type="button"
+          ></button>
+
+          <h3 class="popup__title">¿Estás seguro/a?</h3>
+
+          <button class="button popup__button" type="button">Sí</button>
+        </div>
       </div>
     </div>
 

@@ -1,11 +1,13 @@
 import { Popup } from "./Popup.js";
 export class PopupWithConfirmation extends Popup {
-    buttonElement;
-    handleConfirmationClick;
-    constructor(popupSelector, handleConfirmationClick) {
+    //private buttonElement: HTMLElement;
+    formElement;
+    handleSubmit;
+    constructor(popupSelector, handleSubmit) {
         super(popupSelector);
-        this.buttonElement = this.popupElement.querySelector(".popup__button");
-        this.handleConfirmationClick = handleConfirmationClick;
+        //this.buttonElement = this.popupElement.querySelector(".popup__button") as HTMLElement;
+        this.handleSubmit = handleSubmit;
+        this.formElement = this.popupElement.querySelector(".popup__form");
     }
     open() {
         super.open();
@@ -13,11 +15,12 @@ export class PopupWithConfirmation extends Popup {
     close() {
         super.close();
     }
+    setSubmitAction() { }
     setEventListeners() {
         super.setEventListeners();
-        this.buttonElement.addEventListener("submit", (event) => {
+        this.formElement.addEventListener("submit", (event) => {
             event.preventDefault();
-            this.handleConfirmationClick();
+            this.handleSubmit();
             this.close();
         });
     }
