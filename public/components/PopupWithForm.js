@@ -33,11 +33,28 @@ export class PopupWithForm extends Popup {
     }
     setEventListeners() {
         super.setEventListeners();
-        this.formElement.addEventListener("submit", (event) => {
+        this.formElement.addEventListener("submit", async (event) => {
             event.preventDefault();
             const inputValues = this.getInputValues();
-            this.handleFormSubmit(inputValues);
-            this.close();
+            const submitButton = this.formElement.querySelector("[type=submit]");
+            const originalButtonText = submitButton?.textContent ?? "";
+            if (submitButton) {
+                submitButton.textContent = "Guardando...";
+                submitButton.disabled = true;
+            }
+            try {
+                await this.handleFormSubmit(inputValues);
+                this.close();
+            }
+            catch (error) {
+                console.error("No se pudo guardar el formulario:", error);
+            }
+            finally {
+                if (submitButton) {
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+                }
+            }
         });
     }
 }

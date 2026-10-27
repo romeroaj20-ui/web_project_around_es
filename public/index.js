@@ -5,28 +5,73 @@ import { Card } from "./components/Card.js";
 import { Section } from "./components/Section.js";
 import { FormValidator } from "./components/FormValidator.js";
 import { initialCards, defaultFormConfig } from "./utils/constants.js";
+import { Api } from "./components/Api.js";
+const api = new Api("https://around-api.es.tripleten-services.com/v1/");
+api.getUserInfo().then(console.log);
+api.getInitialCards().then(console.log);
 const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
 const createCard = (cardData) => {
     const card = new Card(cardData, "#card-template", (name, link) => {
-        imagePopup.open({ name, link });
+        imagePopup.open({ name, link, isLiked: false });
     });
     return card.generateCard();
 };
+const initApp = async () => {
+    try {
+        const [userData, initialCards] = await Promise.all([
+            api.getUserInfo(),
+            api.getInitialCards()
+        ]);
+        initialCards.forEach((cardData) => cardsSection.addItem(createCard(cardData)));
+        userInfo.setUserInfo({
+            name: userData.name,
+            description: userData.description,
+            avatar: userData.avatar,
+        });
+    }
+    catch (err) {
+        console.error("Fallo al cargar datos iniciales:", err);
+    }
+};
+initApp();
 const cardsSection = new Section({
-    items: initialCards,
+    items: initialCards.map((cardData) => ({ ...cardData, isLiked: false })),
     renderer: (cardData) => cardsSection.addItem(createCard(cardData)),
 }, ".cards__list");
-cardsSection.renderItems();
-const editProfilePopup = new PopupWithForm("#edit-popup", (inputValues) => {
-    userInfo.setUserInfo({
+const avatarPopup = new PopupWithForm("#avatar-popup", async (inputValues) => {
+    const avatarUrl = inputValues["avatar"].trim();
+    const updatedUser = await api.updateProfileAvatar(avatarUrl);
+    userInfo.setAvatar(updatedUser.avatar);
+});
+avatarPopup.setEventListeners();
+document.querySelector(".profile__edit").addEventListener("click", () => {
+    avatarPopup.open();
+    validators["avatar-form"].resetValidation();
+});
+const editProfilePopup = new PopupWithForm("#edit-popup", async (inputValues) => {
+    const data = {
         name: inputValues["name"],
         description: inputValues["description"],
+    };
+    const UpdateUser = await api.updateUserInfo(data);
+    userInfo.setUserInfo({
+        name: UpdateUser.name,
+        description: UpdateUser.description,
     });
+    editProfilePopup.close();
 });
 editProfilePopup.setEventListeners();
-const newCardPopup = new PopupWithForm("#new-card-popup", (inputValues) => {
-    cardsSection.addItem(createCard({ name: inputValues["place-name"], link: inputValues["link"] }));
+const newCardPopup = new PopupWithForm("#new-card-popup", async (inputValues) => {
+    const newCard = await api.addNewCard({
+        name: inputValues["place-name"],
+        link: inputValues["link"],
+        isLiked: false,
+    });
+    newCard.forEach((cardData) => {
+        cardsSection.addItem(createCard(cardData));
+    });
+    newCardPopup.close();
 });
 newCardPopup.setEventListeners();
 document.querySelector(".profile__edit-button").addEventListener("click", () => {
@@ -47,4 +92,5 @@ document.querySelectorAll(".popup__form").forEach((formElement) => {
 const userInfo = new UserInfo({
     nameSelector: ".profile__title",
     jobSelector: ".profile__description",
+    avatarSelector: ".profile__image",
 });

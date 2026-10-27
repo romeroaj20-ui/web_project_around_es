@@ -37,7 +37,11 @@ export class Card {
     };
     setEventListeners() {
         const cardImage = this.element.querySelector(".card__image");
-        cardImage.addEventListener("click", () => this.handleCardClick(this.name, this.link));
+        cardImage.addEventListener("click", async () => {
+            //cambiar texto a buton a guardando
+            await this.handleCardClick(this.name, this.link);
+            //volver texto a boton normal 
+        });
         const likeButton = this.element.querySelector(".card__like-button");
         likeButton.addEventListener("click", this.handleLikeClick);
         const deleteButton = this.element.querySelector(".card__delete-button");
