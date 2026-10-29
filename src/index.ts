@@ -20,20 +20,23 @@ const api = new Api({
 const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
 
+const confirmationPopup = new PopupWithConfirmation("#confirmation-popup", () => {});
+confirmationPopup.setEventListeners();
+
 const createCard = (cardData: CardData): HTMLElement => {
   const card = new Card(cardData, "#card-template", {
     handleCardClick: (name, link) => {
       imagePopup.open({ name, link, isLiked: false });
     },
     handleLikeClick: async (data) => {
-      if (data.isLiked) {
-        await api.deleteLikeCard(data);
-      } else {
-        await api.likeCard(data);
-      }
+      data.isLiked ? api.deleteLikeCard(data._id!) : api.likeCard(data._id!);
     },
     handleDeleteClick: async (data) => {
-      await api.deleteCard(data);
+      confirmationPopup.setSubmitAction(async () => {
+        await api.deleteCard(data._id!);
+        card.removeCard();
+      });
+      confirmationPopup.open();
     },
   });
   return card.generateCard();

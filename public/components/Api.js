@@ -12,7 +12,6 @@ export class Api {
         throw new Error(`Error: ${response.status}`);
     }
     async getUserInfo() {
-        console.log(this.headers);
         const response = await fetch(`${this.baseUrl}users/me`, {
             headers: this.headers,
         });

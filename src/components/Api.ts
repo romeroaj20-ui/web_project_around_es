@@ -24,7 +24,6 @@ export class Api {
   }
 
   public async getUserInfo(): Promise<UserData> {
-    console.log(this.headers);
     const response = await fetch(`${this.baseUrl}users/me`, {
       headers: this.headers,
     });

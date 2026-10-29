@@ -19,6 +19,10 @@ export class Card {
             .cloneNode(true);
         return cardElement;
     }
+    setLike(isLiked) {
+        this.data.isLiked = isLiked;
+        this.likeButton.classList.toggle("card__like-button_is-active", isLiked);
+    }
     generateCard() {
         this.element = this.getTemplate();
         const cardImage = this.element.querySelector(".card__image");
@@ -26,8 +30,12 @@ export class Card {
         cardImage.src = this.data.link;
         cardImage.alt = this.data.name;
         cardTitle.textContent = this.data.name;
+        this.setLike(this.data.isLiked);
         this.setEventListeners();
         return this.element;
+    }
+    removeCard() {
+        this.element.remove();
     }
     setEventListeners() {
         const cardImage = this.element.querySelector(".card__image");
@@ -36,13 +44,12 @@ export class Card {
         });
         const likeButton = this.element.querySelector(".card__like-button");
         likeButton.addEventListener("click", async () => {
-            await this.handleLikeClick(this.data);
-            likeButton.classList.toggle("card__like-button_is-active");
+            const updatedCard = await this.handleLikeClick(this.data);
+            this.setLike(updatedCard.isLiked);
         });
         const deleteButton = this.element.querySelector(".card__delete-button");
         deleteButton.addEventListener("click", async () => {
             await this.handleDeleteClick(this.data);
-            deleteButton.closest(".card")?.remove();
         });
     }
 }
