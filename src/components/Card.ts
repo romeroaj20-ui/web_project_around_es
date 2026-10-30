@@ -18,7 +18,7 @@ export class Card {
   private element!: HTMLElement;
   private selector: string;
   private handleCardClick: (name: string, link: string) => void;
-  private handleLikeClick: (card: CardData) => Promise<void>;
+  private handleLikeClick: (card: CardData) => Promise<CardData>;
   private handleDeleteClick: (card: CardData) => Promise<void>;
 
   constructor(
@@ -27,7 +27,7 @@ export class Card {
 
     handlers: {
       handleCardClick: (name: string, link: string) => void;
-      handleLikeClick: (card: CardData) => Promise<void>;
+      handleLikeClick: (card: CardData) => Promise<CardData>;
       handleDeleteClick: (card: CardData) => Promise<void>;
     },
   ) {
@@ -52,8 +52,11 @@ export class Card {
   }
 
   setLike(isLiked: boolean): void {
+    const likeButton = this.element.querySelector(
+      ".card__like-button",
+    ) as HTMLButtonElement;
     this.data.isLiked = isLiked;
-    this.likeButton.classList.toggle("card__like-button_is-active", isLiked);
+    likeButton.classList.toggle("card__like-button_is-active", isLiked);
   }
 
   generateCard(): HTMLElement {

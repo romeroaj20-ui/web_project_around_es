@@ -39,27 +39,24 @@ export class Api {
         });
         return this.handleResponse(response);
     }
-    async deleteCard(cardData) {
-        const response = await fetch(`${this.baseUrl}cards/${cardData._id}`, {
+    async deleteCard(cardId) {
+        const response = await fetch(`${this.baseUrl}cards/${cardId}`, {
             method: "DELETE",
             headers: this.headers,
-            body: JSON.stringify({ name: cardData.name, link: cardData.link }),
         });
-        return this.handleResponse(response);
+        await this.handleResponse(response);
     }
-    async likeCard(cardData) {
-        const response = await fetch(`${this.baseUrl}cards/${cardData._id}/likes`, {
+    async likeCard(cardId) {
+        const response = await fetch(`${this.baseUrl}cards/${cardId}/likes`, {
             method: "PUT",
             headers: this.headers,
-            body: JSON.stringify({ name: cardData.name, link: cardData.link }),
         });
         return this.handleResponse(response);
     }
-    async deleteLikeCard(cardData) {
-        const response = await fetch(`${this.baseUrl}cards/${cardData._id}/likes`, {
+    async deleteLikeCard(cardId) {
+        const response = await fetch(`${this.baseUrl}cards/${cardId}/likes`, {
             method: "DELETE",
             headers: this.headers,
-            body: JSON.stringify({ name: cardData.name, link: cardData.link }),
         });
         return this.handleResponse(response);
     }

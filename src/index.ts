@@ -20,7 +20,10 @@ const api = new Api({
 const imagePopup = new PopupWithImage("#image-popup");
 imagePopup.setEventListeners();
 
-const confirmationPopup = new PopupWithConfirmation("#confirmation-popup", () => {});
+const confirmationPopup = new PopupWithConfirmation(
+  "#confirmation-popup",
+  () => {},
+);
 confirmationPopup.setEventListeners();
 
 const createCard = (cardData: CardData): HTMLElement => {
@@ -28,8 +31,10 @@ const createCard = (cardData: CardData): HTMLElement => {
     handleCardClick: (name, link) => {
       imagePopup.open({ name, link, isLiked: false });
     },
-    handleLikeClick: async (data) => {
-      data.isLiked ? api.deleteLikeCard(data._id!) : api.likeCard(data._id!);
+    handleLikeClick: (data) => {
+      return data.isLiked
+        ? api.deleteLikeCard(data._id!)
+        : api.likeCard(data._id!);
     },
     handleDeleteClick: async (data) => {
       confirmationPopup.setSubmitAction(async () => {

@@ -20,8 +20,9 @@ export class Card {
         return cardElement;
     }
     setLike(isLiked) {
+        const likeButton = this.element.querySelector(".card__like-button");
         this.data.isLiked = isLiked;
-        this.likeButton.classList.toggle("card__like-button_is-active", isLiked);
+        likeButton.classList.toggle("card__like-button_is-active", isLiked);
     }
     generateCard() {
         this.element = this.getTemplate();

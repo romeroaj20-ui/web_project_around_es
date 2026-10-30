@@ -23,8 +23,10 @@ const createCard = (cardData) => {
         handleCardClick: (name, link) => {
             imagePopup.open({ name, link, isLiked: false });
         },
-        handleLikeClick: async (data) => {
-            data.isLiked ? api.deleteLikeCard(data._id) : api.likeCard(data._id);
+        handleLikeClick: (data) => {
+            return data.isLiked
+                ? api.deleteLikeCard(data._id)
+                : api.likeCard(data._id);
         },
         handleDeleteClick: async (data) => {
             confirmationPopup.setSubmitAction(async () => {

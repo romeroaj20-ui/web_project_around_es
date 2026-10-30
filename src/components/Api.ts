@@ -55,29 +55,26 @@ export class Api {
     return this.handleResponse<CardData>(response);
   }
 
-  public async deleteCard(cardData: CardData): Promise<CardData> {
-    const response = await fetch(`${this.baseUrl}cards/${cardData._id}`, {
+  public async deleteCard(cardId: string): Promise<void> {
+    const response = await fetch(`${this.baseUrl}cards/${cardId}`, {
       method: "DELETE",
       headers: this.headers,
-      body: JSON.stringify({ name: cardData.name, link: cardData.link }),
     });
-    return this.handleResponse<CardData>(response);
+    await this.handleResponse<unknown>(response);
   }
 
-  public async likeCard(cardData: CardData): Promise<CardData> {
-    const response = await fetch(`${this.baseUrl}cards/${cardData._id}/likes`, {
+  public async likeCard(cardId: string): Promise<CardData> {
+    const response = await fetch(`${this.baseUrl}cards/${cardId}/likes`, {
       method: "PUT",
       headers: this.headers,
-      body: JSON.stringify({ name: cardData.name, link: cardData.link }),
     });
     return this.handleResponse<CardData>(response);
   }
 
-  public async deleteLikeCard(cardData: CardData): Promise<CardData> {
-    const response = await fetch(`${this.baseUrl}cards/${cardData._id}/likes`, {
+  public async deleteLikeCard(cardId: string): Promise<CardData> {
+    const response = await fetch(`${this.baseUrl}cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this.headers,
-      body: JSON.stringify({ name: cardData.name, link: cardData.link }),
     });
     return this.handleResponse<CardData>(response);
   }
